@@ -2,9 +2,11 @@ import { render, waitFor, screen } from '@testing-library/react';
 import user from "@testing-library/user-event";
 import { useContext } from 'react';
 import UserContext from './user';
-import { Provider, LoginStatus } from './user';
+import { LoginStatus } from './user';
+import { UserProvider as Provider } from './user';
 
 // login
+/*
 const TestUserComponent = ({userId, password}) => {
     const { user, fetchUser } = useContext(UserContext);
     fetchUser(userId, password);

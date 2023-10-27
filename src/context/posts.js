@@ -33,10 +33,17 @@ function PostProvider({ children }) {
 
   const deletePostById = useCallback(async (postId) => //Not sure where to get userId to put in the function, so just put postId as a filler for now
   {
-       await axios.delete(`${urlVariable}http://localhost:5000/posts?userId=${postId}&_expand=user&_sort=date time&_order=desc`);
+       const response = await axios.delete(`${urlVariable}http://localhost:5000/posts?id=${postId}`);
+       console.log(response.data)
 
-       const response = axios.get(`${urlVariable}http://localhost:5000/posts?userId=${postId}&_expand=user&_sort=date time&_order=desc`);
-       setPosts(response.data);
+       const newPosts = posts.filter( (post) => {
+        if(post.id !== postId)
+        return(true)
+
+        else 
+        return (false)
+       })
+      setPosts(newPosts)
   }, []);
 
   const editPostById = useCallback (async (postId,) => //not sure what to put as the second parameter, function expresssion not finished
@@ -59,15 +66,17 @@ function PostProvider({ children }) {
   }
   );
  
-  const valueToShare = {featuredPosts, categories, posts, fetchFeaturedPosts, fetchCategories, fetchPosts}
+  const valueToShare = {featuredPosts, categories, posts, fetchFeaturedPosts, fetchCategories, fetchPosts, deletePostById}
 
+
+  return (
+    < PostContexts.Provider value = {valueToShare} >
+      { children }
+    </PostContexts.Provider>
+  )
 }
 
-return (
-  < PostContexts.Provider value = {valueToShare} >
-    { children }
-  </PostContexts.Provider>
-)
+
 
 export default PostContexts
 export {PostProvider}

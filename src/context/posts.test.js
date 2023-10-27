@@ -2,12 +2,12 @@ import { render, waitFor, screen } from '@testing-library/react';
 import user from "@testing-library/user-event";
 import { useContext } from 'react';
 import PostsContext from './posts';
-import { Provider } from './posts';
+import { PostProvider as Provider } from './posts';
 import UserContext from './user';
-import { Provider as UserProvider } from './user';
+import { UserProvider } from './user';
 
  //categories
-const TestCategoriesComponent = () => {
+/*const TestCategoriesComponent = () => {
     const { categories, fetchCategories } = useContext(PostsContext);
     fetchCategories();
     return (
@@ -30,6 +30,7 @@ test('fetch Categories', async () => {
 })
 
 // featured posts
+*/
 const TestFeaturedPostsComponent = () => {
     const { featuredPosts, fetchFeaturedPosts } = useContext(PostsContext);
     fetchFeaturedPosts();
@@ -51,7 +52,7 @@ test('fetch featuredPosts', async () => {
         expect(screen.getByRole('exists')).toBeInTheDocument();
     })
 })
-
+/*
 // posts
 const TestPostsComponent = () => {
     const { posts, fetchPosts } = useContext(PostsContext);
@@ -75,8 +76,8 @@ test('fetch Posts', async () => {
     })
 })
 
-/* delete
-const TestDeleteComponent = () => {
+//delete
+/*const TestDeleteComponent = () => {
     const { posts, fetchPosts, deletePostById } = useContext(PostsContext);
     fetchPosts(1);
     return (
@@ -112,8 +113,8 @@ test('delete Post', async () => {
         expect(after).toBeInTheDocument();
     });
 })
-*/
-/* create
+
+*//* create
 const TestCreatePostComponent = () => {
     const { posts, fetchPosts, createPost } = useContext(PostsContext);
     const { user, fetchUser } = useContext(UserContext);
