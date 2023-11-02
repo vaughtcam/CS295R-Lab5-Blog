@@ -4,21 +4,31 @@ import axios from 'axios';
 const UserContext = createContext();
 
 function UserProvider ({ children }) {
-const [user, setUser] = useState({})
+const [user, setUser] = useState(null)
 
 
 const urlVariable = process.env.REACT_APP_SERVER_URL;
 
 const fetchUser = async (userId, password) => {
+let tempUser = null
+
 
  const response = await axios.get(`${urlVariable}/users?userid=${userId}&password=${password}`);
-
-//not sure how to do the conditional operator part 
- setUser(response.data);
-return(user)
+ if (response.data.length === 1) {
+    tempUser = response.data[0];
 }
 
-const editUserById = async (userId, )=> //again, not sure about second parameter
+setUser(tempUser) 
+return (tempUser)
+
+}
+
+const resetUser = () => {
+    setUser(null)
+}
+
+
+/*const editUserById = async (userId, )=> //again, not sure about second parameter
 {
     const response = await axios.put(`${urlVariable}/users?userid=${userId}&password=${password}`,
     {})
@@ -38,8 +48,11 @@ const resetUser = () => {
     //I am not sure how to handle this part yet because we have not touched anything with the login/out
     setUser(null)
 }
+*/
 
-const userValuetoShare = {user, fetchUser}
+
+
+const userValuetoShare = {user, fetchUser, resetUser}
 return(
 <UserContext.Provider value = {userValuetoShare}>
     {children}

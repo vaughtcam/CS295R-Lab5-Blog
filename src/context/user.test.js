@@ -6,7 +6,7 @@ import { LoginStatus } from './user';
 import { UserProvider as Provider } from './user';
 
 // login
-/*
+
 const TestUserComponent = ({userId, password}) => {
     const { user, fetchUser } = useContext(UserContext);
     fetchUser(userId, password);
@@ -51,7 +51,7 @@ test('fetch user invalid login', async () => {
     })
 })
 
-/* logout
+// logout
 const TestResetUserComponent = ({userId, password}) => {
     const { user, fetchUser, resetUser } = useContext(UserContext);
     fetchUser(userId, password);
@@ -86,7 +86,7 @@ test('logout user', async () => {
         expect(after).toBeInTheDocument();
     });
 })
-*/
+
 /* create user
 const TestCreateUserComponent = () => {
     const { user, createUser } = useContext(UserContext);

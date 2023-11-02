@@ -11,8 +11,9 @@ function PostProvider({ children }) {
 
 
   const urlVariable = process.env.REACT_APP_SERVER_URL;
+
   const fetchFeaturedPosts = useCallback(async () => {
-    const response = await axios.get(`${urlVariable}/posts_expand=user&_sort=datetime&_order=desc& _start=0&_end=12
+    const response = await axios.get(`${urlVariable}/posts?_expand=user&_sort=datetime&_order=desc& _start=0&_end=12
         `);
 
     setFeaturedPosts(response.data);
@@ -26,14 +27,14 @@ function PostProvider({ children }) {
 
 
   const fetchPosts = useCallback(async (userId) => {
-    const response = await axios.get(`${urlVariable}http://localhost:5000/posts?userId=${userId}&_expand=user&_sort=date time&_order=desc`);
+    const response = await axios.get(`${urlVariable}/posts?userId=${userId}&_expand=user&_sort=date time&_order=desc`);
 
     setPosts(response.data);
   }, []);
 
-  const deletePostById = useCallback(async (postId) => //Not sure where to get userId to put in the function, so just put postId as a filler for now
+  /*const deletePostById = useCallback(async (postId) => //Not sure where to get userId to put in the function, so just put postId as a filler for now
   {
-       const response = await axios.delete(`${urlVariable}http://localhost:5000/posts?id=${postId}`);
+       const response = await axios.delete(`${urlVariable}/posts?id=${postId}`);
        console.log(response.data)
 
        const newPosts = posts.filter( (post) => {
@@ -65,8 +66,8 @@ function PostProvider({ children }) {
     setPosts(response.data)
   }
   );
- 
-  const valueToShare = {featuredPosts, categories, posts, fetchFeaturedPosts, fetchCategories, fetchPosts, deletePostById}
+ */
+  const valueToShare = {featuredPosts, categories, posts, fetchFeaturedPosts, fetchCategories, fetchPosts};
 
 
   return (
@@ -74,9 +75,10 @@ function PostProvider({ children }) {
       { children }
     </PostContexts.Provider>
   )
+  
 }
 
 
 
-export default PostContexts
-export {PostProvider}
+export default PostContexts;
+export {PostProvider};

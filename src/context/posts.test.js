@@ -7,7 +7,7 @@ import UserContext from './user';
 import { UserProvider } from './user';
 
  //categories
-/*const TestCategoriesComponent = () => {
+const TestCategoriesComponent = () => {
     const { categories, fetchCategories } = useContext(PostsContext);
     fetchCategories();
     return (
@@ -30,7 +30,7 @@ test('fetch Categories', async () => {
 })
 
 // featured posts
-*/
+
 const TestFeaturedPostsComponent = () => {
     const { featuredPosts, fetchFeaturedPosts } = useContext(PostsContext);
     fetchFeaturedPosts();
@@ -52,7 +52,7 @@ test('fetch featuredPosts', async () => {
         expect(screen.getByRole('exists')).toBeInTheDocument();
     })
 })
-/*
+
 // posts
 const TestPostsComponent = () => {
     const { posts, fetchPosts } = useContext(PostsContext);
