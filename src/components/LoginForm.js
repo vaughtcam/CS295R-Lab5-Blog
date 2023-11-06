@@ -18,8 +18,8 @@ function LoginForm({ onSubmit }) {
         event.preventDefault();
         const tempUser = await fetchUser(userid, password);
         console.log(tempUser);
-        if (tempUser.status === 1) {
-            fetchPosts(tempUser.info.id);
+        if (tempUser) {
+            fetchPosts(tempUser.id);
             setUserid('');
             setPassword('');
             onSubmit();

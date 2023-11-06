@@ -2,6 +2,7 @@ import { useContext } from "react";
 import UserContext from "../context/user";
 import { useState } from "react";
 import LoginForm from "./LoginForm";
+import BlogIcon from '../images/blogicon.jpg';
 
 
 function NavBar() {
@@ -13,7 +14,7 @@ function NavBar() {
     const handleClick = (event) => {
         event.preventDefault();
 
-        if (showLogin == false && user == null) {
+        if (showLogin == false && user === null) {
             setShowLogin(true);
         }
 
@@ -31,20 +32,35 @@ function NavBar() {
         setShowLogin(false);
     }
 
+    let loginStuff = '';
 
+    if(showLogin === true){
+        loginStuff = <LoginForm onSubmit = {handleLoginSubmit} />
+    }
+    
+    let updateUserProfilebutton = '';
 
+    if(user !== null){
+        updateUserProfilebutton = <div><a href = "#"><button>Update User Profile</button></a></div>
+    }
+
+    let newPostIcon = '';
+
+    if (user !== null) {
+        newPostIcon = <div><a href = "#"><button>New Post</button></a></div>
+    }
 
     return (
 
 
         <div>
             <div>
-                <LoginForm onSubmit = {handleLoginSubmit}/>
+               {loginStuff}
                 <nav>
-                    <div> Brand or Logo </div>
-                    <button>New Post</button>
-                    <button>Update User Profile</button>
-                    <button>Login or Logout</button>
+                    <a href = "/"> <img src = {BlogIcon}></img></a>
+                    {newPostIcon}
+                    {updateUserProfilebutton}
+                    <button onClick = {handleClick}>Login or Logout</button>
                 </nav>
             </div>
         </div>
