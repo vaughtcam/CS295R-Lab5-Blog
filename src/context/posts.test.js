@@ -77,7 +77,7 @@ test('fetch Posts', async () => {
 })
 
 //delete
-/*const TestDeleteComponent = () => {
+const TestDeleteComponent = () => {
     const { posts, fetchPosts, deletePostById } = useContext(PostsContext);
     fetchPosts(1);
     return (
@@ -114,7 +114,7 @@ test('delete Post', async () => {
     });
 })
 
-*//* create
+ //create
 const TestCreatePostComponent = () => {
     const { posts, fetchPosts, createPost } = useContext(PostsContext);
     const { user, fetchUser } = useContext(UserContext);
@@ -164,7 +164,7 @@ test('Create Post', async () => {
         expect(after).toBeInTheDocument();
     });
 })
-*/
+
 /* create post with complex data
 const TestCreateWithComplexDataPostComponent = () => {
     const { posts, fetchPosts, createPost } = useContext(PostsContext);

@@ -5,7 +5,6 @@ function Header (){
 
     return (
         <div className="fill" style={{backgroundImage: `url(${BlogHeaderPic})`}}>
-            <img src = "blogging.jpeg"></img>
             <div style={{height: `350px`}}></div>
         </div>
     )

@@ -32,42 +32,38 @@ function PostProvider({ children }) {
     setPosts(response.data);
   }, []);
 
-  /*const deletePostById = useCallback(async (postId) => //Not sure where to get userId to put in the function, so just put postId as a filler for now
-  {
-       const response = await axios.delete(`${urlVariable}/posts?id=${postId}`);
-       console.log(response.data)
+  const deletePostById = async (id) => {
+    await axios.delete(`${process.env.REACT_APP_SERVER_URL}/posts/${id}`);
 
-       const newPosts = posts.filter( (post) => {
-        if(post.id !== postId)
-        return(true)
+    const updatedPosts = posts.filter((post) => {
+      return post.id !== id;
+    });
 
-        else 
-        return (false)
-       })
-      setPosts(newPosts)
-  }, []);
+    setPosts(updatedPosts);
+  };
 
-  const editPostById = useCallback (async (postId,) => //not sure what to put as the second parameter, function expresssion not finished
-   {
-     const response = await axios.put(`${urlVariable}http://localhost:5000/posts?userId=${postId}&_expand=user&_sort=date time&_order=desc`)
+  const editPostById = async (id, newValues) => {
+    const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/posts/${id}`, newValues);
 
-     setPosts(response.data);
+    const updatedPosts = posts.map((post) => {
+      if (post.id === id) {
+        return { ...post, ...response.data };
+      }
+      return post;
+    });
 
-   },[]);
+    setPosts(updatedPosts);
+  };
 
-  const createPost = useCallback( async (newPost, user) => //same as deletePostById
-  {
-    const response = await axios.post(`${urlVariable}http://localhost:5000/posts?userId=${postId}&_expand=user&_sort=date time&_order=desc`,
-    {
-      newPost,
-      user: {user}
-    })
 
-    setPosts(response.data)
-  }
-  );
- */
-  const valueToShare = {featuredPosts, categories, posts, fetchFeaturedPosts, fetchCategories, fetchPosts};
+  const createPost = async (values, user) => {
+    const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/posts`, values);
+    const newPost = {...response.data, user: user }
+    const updatedPosts = [...posts, newPost];
+    setPosts(updatedPosts);
+  };
+  
+  const valueToShare = {featuredPosts, categories, posts, fetchFeaturedPosts, fetchCategories, fetchPosts, deletePostById, editPostById, createPost};
 
 
   return (

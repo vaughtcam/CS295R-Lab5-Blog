@@ -87,7 +87,7 @@ test('logout user', async () => {
     });
 })
 
-/* create user
+//create user
 const TestCreateUserComponent = () => {
     const { user, createUser } = useContext(UserContext);
     return (
@@ -128,8 +128,8 @@ test('Create User', async () => {
         expect(after).toBeInTheDocument();
     });
 })
-*/
-/* edit user
+
+// edit user
 const TestEditUserComponent = () => {
     const { user, fetchUser, editUserById } = useContext(UserContext);
     fetchUser("duckdaffy", "password");
@@ -171,4 +171,4 @@ test('edit User', async () => {
         expect(after).toBeInTheDocument();
     });
 })
-*/
+
