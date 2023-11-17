@@ -3,13 +3,15 @@ import UserContext from "../context/user";
 import { useState } from "react";
 import LoginForm from "./LoginForm";
 import BlogIcon from '../images/blogicon.jpg';
+import { Link, NavLink, useLocation } from "react-router-dom";
+import { BsFillGearFill } from 'react-icons/bs';
 
 
 function NavBar() {
 
     const { user, resetUser } = useContext(UserContext);
-
     const [showLogin, setShowLogin] = useState(false);
+    const location = useLocation();
 
     const handleClick = (event) => {
         event.preventDefault();
@@ -34,37 +36,56 @@ function NavBar() {
 
     let loginStuff = '';
 
-    if(showLogin === true){
-        loginStuff = <LoginForm onSubmit = {handleLoginSubmit} />
+    if (showLogin === true) {
+        loginStuff = <LoginForm onSubmit={handleLoginSubmit} />
     }
-    
+
     let updateUserProfilebutton = '';
 
-    if(user !== null){
-        updateUserProfilebutton = <div><a href = "#"><button>Update User Profile</button></a></div>
+    if (user) {
+        updateUserProfilebutton = <button style={{ backgroundColor: "aquamarine" }}><Link to={`/user`}>Edit User Profile</Link></button>
     }
 
-    let newPostIcon = '';
+    let newPostButton = '';
 
-    if (user !== null) {
-        newPostIcon = <div><a href = "#"><button>New Post</button></a></div>
+    if (user && /^\/$/.test(location.pathname)) {
+        newPostButton = <button style={{ backgroundColor: "aquamarine" }} ><Link to="/posts/new">New Post</Link></button>
     }
 
+    let editPostButton = '';
+
+    if (user && /^\/posts\/\d{1,}$/.test(location.pathname)) {
+                           editPostButton =  <Link to={`/posts/edit/${location.state.id}`} state={location.state}>
+                            <h3><BsFillGearFill /></h3>
+                            </Link>}
+
+                        
+
+
+
+
+
+//<div>{newPostButton}</div>
     return (
-
 
         <div>
             <div>
-               {loginStuff}
+                {loginStuff}
                 <nav>
-                    <a href = "/"> <img src = {BlogIcon}></img></a>
-                    {newPostIcon}
-                    {updateUserProfilebutton}
-                    <button onClick = {handleClick}>Login or Logout</button>
+                    <div>
+                        {(user) ? <NavLink to="/"> <img src={BlogIcon} height="50"></img> </NavLink> : ""}
+                        <div>{updateUserProfilebutton}</div>
+                        <div>{newPostButton}</div>
+                        <div>{editPostButton}</div>
+                        
+                        <div style={{ textAlign: "right" }}>
+                            <button style={{ backgroundColor: "aquamarine" }} onClick={handleClick} type="button">{(!user) ? "Login" : "Logout"}</button>
+                        </div>
+                    </div>
                 </nav>
             </div>
         </div>
     )
-}
 
+    }
 export default NavBar

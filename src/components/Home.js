@@ -12,11 +12,11 @@ function Home (){
     return (
         <div>
             
-            < Header />;
+          
             <h1>
                 {user !== null ? "My Posts" : "Featured Posts"}
             </h1>
-            <PostsList />;
+            <PostsList />
            
         </div>
 

@@ -43,7 +43,7 @@ function LoginForm({ onSubmit }) {
                 value = {password} onChange = {(event) => {setPassword(event.target.value);}}
                 placeholder = "password" />
 
-                <button className = "btn btn-primary mb-1" type = "submit"> Login </button>
+                <button className = "btn btn-primary mb-1" type = "submit"> Submit </button>
             </form>
         </div>
     )
