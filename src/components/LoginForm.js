@@ -1,16 +1,12 @@
 import { useState, useContext } from "react";
-
 import UserContext from "../context/user";
 import { LoginStatus } from '../context/user';
-
 import PostContexts from "../context/posts";
 
 function LoginForm({ onSubmit }) {
-
     const [userid, setUserid] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(false);
-
     const { fetchUser } = useContext(UserContext);
     const { fetchPosts } = useContext(PostContexts);
 
@@ -27,7 +23,6 @@ function LoginForm({ onSubmit }) {
         else {
             setError(true)
         }
-
     }
 
     return (

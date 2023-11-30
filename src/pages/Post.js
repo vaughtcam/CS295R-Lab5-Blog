@@ -12,7 +12,6 @@ function Post () {
     const {user} = useContext(UserContext)
 
     return (
-
         <div>
             <header style = {{color: "white"}}>Super secret text that nobody can see but moves the post title off the top a little</header>
             {(user) ? ""
@@ -24,7 +23,6 @@ function Post () {
             <div className = "m-2">{parse(post.content)}</div>
         </div>
     );
-
 }
 
 export default Post

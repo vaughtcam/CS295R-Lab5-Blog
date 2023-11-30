@@ -1,29 +1,10 @@
 import Header from "../components/Header";
 import UserContext from "../context/user"
 import { useContext } from "react"
-import { useForm } from "react-hook-form";
+import { useForm, getValues } from "react-hook-form";
 import './styles.css';
 import { useState } from "react";
-
-
-/*const {user} = useContext(UserContext)
-const [image, setImage] = useState(user.image)
-
-function convertImageToBase64(imgUrl, callback) { const image = new Image(); image.crossOrigin='anonymous';
-image.onload = () => {
-const canvas = document.createElement('canvas');
-const ctx = canvas.getContext('2d'); canvas.height = image.naturalHeight; canvas.width = image.naturalWidth; ctx.drawImage(image, 0, 0);
-const dataUrl = canvas.toDataURL();
-callback && callback(dataUrl) }
-    image.src = imgUrl;
-}
-const handleFileChange = (event) => {
-const file = URL.createObjectURL(event.target.files[0]);
-convertImageToBase64(file, removeTypeAndSave) }
-const removeTypeAndSave = (base64Image) => { const updatedImage = base64Image.replace(
-"data:image/png;base64,", "" ); setImage(updatedImage);
-}
-*/
+import { useLocation, useNavigate } from "react-router-dom";
 
 function convertImageToBase64(imgUrl, callback) {
   const image = new Image(); image.crossOrigin = 'anonymous';
@@ -37,31 +18,42 @@ function convertImageToBase64(imgUrl, callback) {
 }
 
 function EditUserProfile() {
-  /*
-      const {user} = useContext(UserContext)
-      return (
-          <div>
-              <header><img src={`data:image/png;base64, ${user.image}`}></img></header>
-          <h1>{user.name} </h1>
-          {user.bio}
-          
-          </div>s
-      );
-  */
-
-
-  const { user } = useContext(UserContext)
+  
+  const { user, editUserById } = useContext(UserContext)
   const [image, setImage] = useState(user.image)
-
+  const navigate = useNavigate()
+  console.log(user.email, user.name, user.id, user.bio, user.password)
   const {
+    control,
     register,
     handleSubmit,
     formState: { errors }
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      userid: user.userid ,
+      bio: user.bio,
+      password: user.password
+    }
+  });
 
-  const onSubmit = (data) => {
-    console.log(data);
-  };
+  const onSubmit = async (data) => {
+    const { id, email, name, userid, bio, password} = data;
+    console.log(data)
+    const updatedUser = {
+      name,
+      userid,
+      email,
+      bio,
+      password ,
+      image
+    }
+
+    await editUserById(id, updatedUser);
+    navigate('/');
+  }
 
   const handleFileChange = (event) => {
     const file = URL.createObjectURL(event.target.files[0]);
@@ -73,37 +65,24 @@ function EditUserProfile() {
       "data:image/png;base64,", ""); setImage(updatedImage);
   }
 
-
-  //<img src={`data:image/png;base64, ${user.image}`}></img>
-  //<img src={`data:image/png;base64,"${image}"`}></img>
   return (
     <div className="App">
+      
       <div>
-      <img src={`data:image/png;base64,"${image}"`} alt ="pic"></img>
+        <img src={`data:image/png;base64,${image}`} height="300 px" alt="pic"></img>
         <h1>{user.name} </h1>
         {user.bio}
       </div>
-      
 
       <form onSubmit={handleSubmit(onSubmit)}>
-
-
         <div className="form-control">
           <label>Profile Picture</label>
           <input onChange={handleFileChange}
             type="file"
             name="image"
-            {...register("image", {
-              required: "image is required.",
-              message: "image is Required"
-            })
-            }
+            id="image"
           />
-          {errors.image && (
-            <p className="errorMsg">{errors.image.message}</p>
-          )}
         </div>
-
 
         <div className="form-control">
           <label>Email</label>
@@ -120,61 +99,54 @@ function EditUserProfile() {
           />
           {errors.email && <p className="errorMsg">{errors.email.message}</p>}
         </div>
+
         <div className="form-control">
           <label>Name</label>
           <input
             type="text"
             name="Name"
-            {...register("Name", {
+            {...register("name", {
               required: "Name is required.",
               message: "Name is Required"
             })
             }
           />
-          {errors.Name && (
-            <p className="errorMsg">{errors.Name.message}</p>
+          {errors.name && (
+            <p className="errorMsg">{errors.name.message}</p>
           )}
         </div>
-
-
 
         <div className="form-control">
           <label>Userid</label>
           <input
             type="text"
             name="Userid"
-            {...register("Userid", {
+            {...register("userid", {
               required: "Userid is required.",
               message: "Userid is Required"
             })
             }
           />
-          {errors.Userid && (
-            <p className="errorMsg">{errors.Userid.message}</p>
+          {errors.userid && (
+            <p className="errorMsg">{errors.userid.message}</p>
           )}
         </div>
-
-
-
-
-
 
         <div className="form-control">
           <label>Tell Us About Yourself</label>
           <input
             type="text"
             name="Bio"
-            {...register("Bio", {
+            {...register("bio", {
               required: "Bio is required.",
               message: "Bio is Required"
             })
             }
           />
-          {errors.Bio && (
-            <p className="errorMsg">{errors.Bio.message}</p>
+          {errors.bio && (
+            <p className="errorMsg">{errors.bio.message}</p>
           )}
         </div>
-
 
         <div className="form-control">
           <label></label>
@@ -184,9 +156,4 @@ function EditUserProfile() {
     </div>
   );
 }
-
-
-
-
-
 export default EditUserProfile

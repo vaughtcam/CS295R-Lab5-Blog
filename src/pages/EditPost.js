@@ -1,5 +1,5 @@
 import Header from "../components/Header";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import PostContext from "../context/posts"
 import UserContext from "../context/user"
 import { useContext } from "react"
@@ -10,8 +10,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-
-
 
 ///should probably go in a separate file in a folder called utilities
 
@@ -26,29 +24,13 @@ function convertImageToBase64(imgUrl, callback) {
   image.src = imgUrl;
 }
 
-// both should go where the other event handlers are (on both pages)
-//also organize evrything
-
-
 
 function EditPost() {
-  /*
-      const {user} = useContext(UserContext)
-      return (
-          <div>
-              <header><img src={`data:image/png;base64, ${user.image}`}></img></header>
-          <h1>{user.name} </h1>
-          {user.bio}
-          
-          </div>
-      );
-  */
 
-
-
-  const { categories } = useContext(PostContext)
+  const { categories, createPost, editPostById } = useContext(PostContext)
   const { user } = useContext(UserContext)
   const location = useLocation();
+  const navigate = useNavigate();
   const isNew = location.pathname === "/posts/new"
 
   const newPost = {
@@ -70,7 +52,7 @@ function EditPost() {
     formState: { errors }
   } = useForm({
     defaultValues: {
-      Title: post.title,
+      title: post.title,
       category: post.category,
     }
   });
@@ -107,10 +89,6 @@ function EditPost() {
     "font"
   ];
 
-  const onSubmit = (data) => {
-    console.log(data);
-  };
-
   const handlePostContentChange = (content, delta, source, editor) => {
     setPostContent(content);
   }
@@ -125,26 +103,54 @@ function EditPost() {
       "data:image/png;base64,", ""); setImage(updatedImage);
   }
 
-  return (
+  const onSubmit = async (data) => {
+    const { title, datetime, category } = data;
+    console.log(data)
+    const updatedPost = {
+      title,
+      userId: parseInt(user.id),
+      datetime: parseInt(datetime),
+      category,
+      content: postContent,
+      image
+    }
 
+    if (!isNew)
+      await editPostById(post.id, updatedPost);
+    else
+      await createPost(updatedPost, user);
+
+    navigate('/');
+  }
+
+  return (
     <div className="App">
+
       <div>
-        <img src={`data:image/png;base64, ${user.image}`}></img>
-        <h1>{user.name} </h1>
-        {user.bio}
+        <img src={`data:image/png;base64, ${image}`} height="350px"></img>
       </div>
+
       <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="form-control">
+          <label>Picture</label>
+          <input onChange={handleFileChange}
+            type="file"
+            name="image"
+            id="image"
+          />
+        </div>
+
         <div className="form-control">
           <label>Title</label>
           <input
             type="text"
             name="Title"
-            {...register("Title", {
+            {...register("title", {
               required: "Title is required.",
               message: "Title is required"
             })}
           />
-          {errors.Title && <p className="errorMsg">{errors.Title.message}</p>}
+          {errors.title && <p className="errorMsg">{errors.title.message}</p>}
         </div>
 
         <div className="form-control">
@@ -164,9 +170,7 @@ function EditPost() {
         <div className="form-control">
           <label>Posted On</label>
           <label>{new Date(post.datetime).toLocaleDateString('en-us', { year: "numeric", month: "short", day: "numeric" })}</label>
-
         </div>
-
 
         <ReactQuill
           className="ql-editor"
@@ -177,30 +181,13 @@ function EditPost() {
           onChange={handlePostContentChange}
         />
 
-
-
         <div className="form-control">
           <label></label>
-          <button type="submit">Login</button>
+          <button type="submit">Submit</button>
         </div>
       </form>
     </div>
   );
 }
-
-
-
-/*
-const location = useLocation()
-const post = location.state
-console.log(location)
-//{post.title}
-    return (
-        <div>
-          Putting some random stuff here just to see stuff
-        </div>
-    );
-*/
-
 
 export default EditPost

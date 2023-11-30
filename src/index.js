@@ -8,12 +8,11 @@ import { PostProvider } from './context/posts';
 import {BrowserRouter} from "react-router-dom";
 
 // DONT FORGET TO PUT THIS IN THE OPENING BROWSER ROUTER ON LINE 16basename = "vaughtc222/CS295R/Lab6/build/"
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <UserProvider>
     <PostProvider>
-      <BrowserRouter>
+      <BrowserRouter basename = "/~vaughtc222/CS295R/FinalLab/build">
       <App />
       </BrowserRouter >
     </PostProvider>

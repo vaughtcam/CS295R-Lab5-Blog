@@ -5,7 +5,6 @@ import Header from "./Header"
  function Layout() {
   return (
     <>
-      
     <NavBar />
     <Header />
     <Outlet />
